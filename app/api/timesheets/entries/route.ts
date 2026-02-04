@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { TimesheetEntry, TimesheetDay } from "@/types";
 
-// In-memory store for entries (in production, use database)
 let entries: TimesheetEntry[] = generateInitialEntries();
 
 function generateInitialEntries(): TimesheetEntry[] {
@@ -26,17 +25,15 @@ function generateInitialEntries(): TimesheetEntry[] {
 		"Feature Implementation",
 	];
 
-	// Generate entries for the current week
 	const today = new Date();
 	const weekStart = new Date(today);
-	weekStart.setDate(today.getDate() - today.getDay() + 1); // Monday
+	weekStart.setDate(today.getDate() - today.getDay() + 1);
 
 	for (let day = 0; day < 5; day++) {
 		const currentDate = new Date(weekStart);
 		currentDate.setDate(weekStart.getDate() + day);
 		const dateStr = currentDate.toISOString().split("T")[0];
 
-		// Add 2-3 entries per day
 		const entriesPerDay = Math.floor(Math.random() * 2) + 2;
 		for (let i = 0; i < entriesPerDay; i++) {
 			const project =
@@ -76,7 +73,6 @@ export async function GET(request: NextRequest) {
 			});
 		}
 
-		// Group entries by day
 		const entriesByDate: Record<string, TimesheetEntry[]> = {};
 		filteredEntries.forEach((entry) => {
 			if (!entriesByDate[entry.date]) {
@@ -85,7 +81,6 @@ export async function GET(request: NextRequest) {
 			entriesByDate[entry.date].push(entry);
 		});
 
-		// Convert to TimesheetDay array
 		const days: TimesheetDay[] = Object.entries(entriesByDate)
 			.map(([date, dayEntries]) => {
 				const dateObj = new Date(date);
@@ -124,7 +119,6 @@ export async function POST(request: NextRequest) {
 		const body = await request.json();
 		const { projectId, workType, description, hours, date } = body;
 
-		// Validation
 		if (!projectId || !workType || !description || !hours || !date) {
 			return NextResponse.json(
 				{ success: false, error: "All fields are required" },
@@ -139,7 +133,6 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Get project name
 		const projects: Record<string, string> = {
 			"proj-1": "Project Alpha",
 			"proj-2": "Project Beta",

@@ -70,3 +70,16 @@ npm run test:watch
 ```
 
 ## Project Structure
+
+src/
+├── app/ # Next.js app directory
+│ ├── api/ # API routes
+│ ├── (dashboard)/ # Dashboard page
+│ └── (auth)/ # Login page
+├── components/ # React components
+│ ├── auth/ # Authentication components
+│ ├── timesheet/ # Timesheet components
+│ └── layout/ # Reusable UI components
+├── contexts/ # Context Provider functions
+├── types/ # TypeScript type definitions
+└── tests/ # Test files
